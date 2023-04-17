@@ -2,6 +2,13 @@ import { Component } from 'react';
 import './movies-add-form.css';
 
 class MoviesAddForm extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      name: '',
+      views: '',
+    };
+  }
   render() {
     return (
       <div className='movies-add-form'>
