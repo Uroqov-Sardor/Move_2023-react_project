@@ -1,6 +1,6 @@
 import "./app.css";
 
-import { Component } from "react";
+import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import AppInfo from "../app-info/app-info";
 import SearchPanel from "../search-panel/search-panel";
@@ -8,43 +8,19 @@ import AppFilter from "../app-filter/app-filter";
 import MovieList from "../movie-list/movie-list";
 import MoviesAddForm from "../movies-add-form/movies-add-form";
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: [
-        {
-          name: "Shelbeylar oilasi",
-          viewers: 850,
-          favourite: false,
-          like: false,
-          id: 1,
-        },
-        {
-          name: "Aka-uka Creylar",
-          viewers: 1050,
-          favourite: false,
-          like: false,
-          id: 2,
-        },
-        {
-          name: "Panjara ortida",
-          viewers: 1050,
-          favourite: false,
-          like: false,
-          id: 3,
-        },
-      ],
-      term: "",
-      filter: "all",
-    };
-  }
+const App = () => {
+  const [data, setData] = useState(arr);
 
-  onDelete = (id) => {
-    this.setState(({ data }) => ({ data: data.filter((c) => c.id !== id) }));
+  const [term, setTerm] = useState("");
+
+  const [filter, setFilter] = useState("all");
+
+  const onDelete = (id) => {
+    const newArr = data.filter((c) => c.id !== id);
+    setData(newArr);
   };
 
-  addForm = (item) => {
+  const addForm = (item) => {
     const newItem = {
       name: item.name,
       viewers: item.viewers,
@@ -52,31 +28,29 @@ class App extends Component {
       favourite: false,
       like: false,
     };
-    this.setState(({ data }) => ({
-      data: [...data, newItem],
-    }));
+    const newArr = [...data, newItem];
+    setData(newArr);
   };
 
-  onToggleProp = (id, prop) => {
-    this.setState(({ data }) => ({
-      data: data.map((item) => {
-        if (item.id === id) {
-          return { ...item, [prop]: !item[prop] };
-        }
-        return item;
-      }),
-    }));
+  const onToggleProp = (id, prop) => {
+    const newArr = data.map((item) => {
+      if (item.id === id) {
+        return { ...item, [prop]: !item[prop] };
+      }
+      return item;
+    });
+
+    setData(newArr);
   };
 
-  searchHandler = (arr, term) => {
-    if (term.length === 0) {
+  const searchHandler = (arr, term) => {
+    if (term === 0) {
       return arr;
     }
-
     return arr.filter((item) => item.name.toLowerCase().indexOf(term) > -1);
   };
 
-  filterHandler = (arr, filter) => {
+  const filterHandler = (arr, filter) => {
     switch (filter) {
       case "popular":
         return arr.filter((c) => c.like);
@@ -87,36 +61,57 @@ class App extends Component {
     }
   };
 
-  updateTermHandler = (term) => this.setState({ term });
+  const updateTermHandler = (term) => setTerm(term);
 
-  updateFilterHandler = (filter) => this.setState({ filter });
+  const updateFilterHandler = (filter) => setFilter(filter);
 
-  render() {
-    const { data, term, filter } = this.state;
-    const allMoviesCount = data.length;
-    const allMovieFavourite = data.filter((c) => c.favourite).length;
-    const visibleData = this.filterHandler(this.searchHandler(data, term), filter);
-    return (
-      <div className="app font-monospace">
-        <div className="content">
-          <AppInfo
-            allMoviesCount={allMoviesCount}
-            allMovieFavourite={allMovieFavourite}
+  return (
+    <div className="app font-monospace">
+      <div className="content">
+        <AppInfo
+          allMoviesCount={data.length}
+          allMovieFavourite={data.filter((c) => c.favourite).length}
+        />
+        <div className="search-panel">
+          <SearchPanel updateTermHandler={updateTermHandler} />
+          <AppFilter
+            filter={filter}
+            updateFilterHandler={updateFilterHandler}
           />
-          <div className="search-panel">
-            <SearchPanel updateTermHandler={this.updateTermHandler} />
-            <AppFilter filter={filter} updateFilterHandler={this.updateFilterHandler} />
-          </div>
-          <MovieList
-            data={visibleData}
-            onDelete={this.onDelete}
-            onToggleProp={this.onToggleProp}
-          />
-          <MoviesAddForm addForm={this.addForm} />
         </div>
+        <MovieList
+          data={filterHandler(searchHandler(data, term), filter)}
+          onDelete={onDelete}
+          onToggleProp={onToggleProp}
+        />
+        <MoviesAddForm addForm={addForm} />
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 export default App;
+
+const arr = [
+  {
+    name: "Shelbeylar oilasi",
+    viewers: 850,
+    favourite: false,
+    like: false,
+    id: 1,
+  },
+  {
+    name: "Aka-uka Creylar",
+    viewers: 1050,
+    favourite: false,
+    like: false,
+    id: 2,
+  },
+  {
+    name: "Panjara ortida",
+    viewers: 1050,
+    favourite: false,
+    like: false,
+    id: 3,
+  },
+]
