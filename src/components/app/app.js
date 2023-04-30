@@ -113,26 +113,26 @@ const App = () => {
 
 export default App;
 
-const arr = [
-  {
-    name: "Shelbeylar oilasi",
-    viewers: 850,
-    favourite: false,
-    like: false,
-    id: 1,
-  },
-  {
-    name: "Aka-uka Creylar",
-    viewers: 1050,
-    favourite: false,
-    like: false,
-    id: 2,
-  },
-  {
-    name: "Panjara ortida",
-    viewers: 1050,
-    favourite: false,
-    like: false,
-    id: 3,
-  },
-];
+// const arr = [
+//   {
+//     name: "Shelbeylar oilasi",
+//     viewers: 850,
+//     favourite: false,
+//     like: false,
+//     id: 1,
+//   },
+//   {
+//     name: "Aka-uka Creylar",
+//     viewers: 1050,
+//     favourite: false,
+//     like: false,
+//     id: 2,
+//   },
+//   {
+//     name: "Panjara ortida",
+//     viewers: 1050,
+//     favourite: false,
+//     like: false,
+//     id: 3,
+//   },
+// ];
